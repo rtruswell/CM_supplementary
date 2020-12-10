@@ -1,4 +1,3 @@
-setwd("~/Dropbox/Potsdam_2019")
 library(ggplot2)
 
 Competition_data <- read.csv("CM_grammar_comparison.csv", header=T)
@@ -55,62 +54,6 @@ CM_matXVS_OEME.gg <- ggplot(Competition_data,aes(x=log.XYVS.XVS.100k,y=log.matXV
   scale_color_identity() +
   theme_minimal()
 
-OE <- subset(Competition_data,Year < 1151)
-OENoZero <- subset(OE,log.XYVS.100k > 0 & log.subXVS.100k > 0)
-ME <- subset(Competition_data,Year > 1150)
-
-#### NOW OE ONLY
-#### NOTHING CORRELATES WITH ANYTHING, EVEN IF YOU EXCLUDE ZEROS
-# Matrix XYVS correlates with embedded XVS
-cor.test(jitter(OE$log.XYVS.100k),jitter(OE$log.subXVS.100k),method = "spearman")
-cor.test(jitter(OENoZero$log.XYVS.100k),jitter(OENoZero$log.subXVS.100k),method = "spearman")
-
-XYVS_subXVS_OE.gg <- ggplot(OE,aes(x=log.XYVS.100k,y=log.subXVS.100k)) +
-  geom_point(aes(size=Words)) + 
-  xlab("log Matrix XYVS/100k words") +
-  ylab("log Embedded XVS/100k words") +
-  theme_minimal()
-
-XYVS_subXVS_OE_NoZero.gg <- ggplot(OENoZero,aes(x=log.XYVS.100k,y=log.subXVS.100k)) +
-  geom_point(aes(size=Words)) + 
-  xlab("log Matrix XYVS/100k words") +
-  ylab("log Embedded XVS/100k words") +
-  theme_minimal()
-
-# (Matrix XYVS + embedded XVS) correlates with matrix XVS
-cor.test(jitter(OE$log.XYVS.XVS.100k),jitter(OE$log.matXVS.100k),method = "spearman")
-cor.test(jitter(OENoZero$log.XYVS.XVS.100k),jitter(OENoZero$log.matXVS.100k),method = "spearman")
-
-CM_matXVS_OE.gg <- ggplot(OE,aes(x=log.XYVS.XVS.100k,y=log.matXVS.100k)) + 
-  geom_point(aes(size=Words)) + 
-  xlab("log (Matrix XYVS + embedded XVS)/100k words") +
-  ylab("log Matrix XVS/100k words") +
-  theme_minimal()
-
-CM_matXVS_OE_NoZero.gg <- ggplot(OENoZero,aes(x=log.XYVS.XVS.100k,y=log.matXVS.100k)) + 
-  geom_point(aes(size=Words)) + 
-  xlab("log (Matrix XYVS + embedded XVS)/100k words") +
-  ylab("log Matrix XVS/100k words") +
-  theme_minimal()
-
-#### NOW ME ONLY
-cor.test(jitter(ME$log.XYVS.100k),jitter(ME$log.subXVS.100k),method = "spearman")
-
-XYVS_subXVS_ME.gg <- ggplot(ME,aes(x=log.XYVS.100k,y=log.subXVS.100k)) +
-  geom_point(aes(size=Words)) + 
-  xlab("log Matrix XYVS/100k words") +
-  ylab("log Embedded XVS/100k words") +
-  theme_minimal()
-
-# (Matrix XYVS + embedded XVS) correlates with matrix XVS
-cor.test(jitter(ME$log.XYVS.XVS.100k),jitter(ME$log.matXVS.100k),method = "spearman")
-
-CM_matXVS_ME.gg <- ggplot(ME,aes(x=log.XYVS.XVS.100k,y=log.matXVS.100k)) + 
-  geom_point(aes(size=Words)) + 
-  xlab("log (Matrix XYVS + embedded XVS)/100k words") +
-  ylab("log Matrix XVS/100k words") +
-  theme_minimal()
-
 ######################################################
 
 #### Loss of V2
@@ -139,32 +82,8 @@ pdf("CM_matXVS.pdf",width = 8,height = 5)
 CM_matXVS.gg
 dev.off()
 
-pdf("XYVS_subXVS_OE.pdf",width = 8,height = 5)
-XYVS_subXVS_OE.gg
-dev.off()
-
-pdf("CM_matXVS_OE.pdf",width = 8,height = 5)
-CM_matXVS_OE.gg
-dev.off()
-
 pdf("CM_matXVS_OEME.pdf",width = 8,height = 5)
 CM_matXVS_OEME.gg
-dev.off()
-
-pdf("XYVS_subXVS_OE_NoZero.pdf",width = 8,height = 5)
-XYVS_subXVS_OE.gg
-dev.off()
-
-pdf("CM_matXVS_OE_NoZero.pdf",width = 8,height = 5)
-CM_matXVS_OE.gg
-dev.off()
-
-pdf("XYVS_subXVS_ME.pdf",width = 8,height = 5)
-XYVS_subXVS_ME.gg
-dev.off()
-
-pdf("CM_matXVS_ME.pdf",width = 8,height = 5)
-CM_matXVS_ME.gg
 dev.off()
 
 pdf("LossOfV2.pdf", width = 8, height = 5)

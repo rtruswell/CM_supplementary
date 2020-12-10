@@ -1,4 +1,3 @@
-setwd("~/Dropbox/Potsdam_2019/")
 library(rnrfa)
 library(ggmap)
 library(dplyr)
@@ -112,7 +111,7 @@ SubIPs <- rbind (SubIPs,SubIPsOb2ProRest)
 
 
 #Merge with PLAEME metadata
-PLAEME_Info <- read.csv("../PLAEME_more_info.csv")
+PLAEME_Info <- read.csv("PLAEME_more_info.csv")
 PLAEME_Info$Filename <- tolower(PLAEME_Info$Filename)
 
 ExclusionsList <- c("X","DubiousADVP","OB1Pro","OB2Pro")
@@ -365,7 +364,6 @@ SubIPs$Northern[SubIPs$First == "S" &
                   SubIPs$Third %in% XP &
                   SubIPs$Fourth %in% XP &
                   SubIPs$SbjType == "FullNP"] <- "Y"
-#ADDED HERE
 # Northern, XP S V YP, Full NP Sbj
 SubIPs$Northern[SubIPs$First %in% XPNoObj &
                   SubIPs$Second == "S" &
@@ -384,7 +382,6 @@ SubIPs$Northern[SubIPs$First %in% XPNoObj &
                   SubIPs$Third == "S" &
                   SubIPs$Fourth == "V" &
                   SubIPs$SbjType == "FullNP"] <- "Y"
-#STOPPED ADDING HERE
 #Northern, S XP YP V, Pronoun Sbj
 SubIPs$Northern[SubIPs$First == "S" &
                   SubIPs$Second %in% XP &
@@ -403,7 +400,6 @@ SubIPs$Northern[SubIPs$First == "S" &
                   SubIPs$Third %in% XP &
                   SubIPs$Fourth %in% XP &
                   SubIPs$SbjType == "Pronoun"] <- "Y"
-#ADDED HERE
 # Northern, XP S V YP, Pronoun Sbj
 SubIPs$Northern[SubIPs$First %in% XPNoObj &
                   SubIPs$Second == "S" &
@@ -422,7 +418,6 @@ SubIPs$Northern[SubIPs$First %in% XPNoObj &
                   SubIPs$Third == "S" &
                   SubIPs$Fourth == "V" &
                   SubIPs$SbjType == "Pronoun"] <- "Y"
-#STOPPED ADDING HERE
 #Southern, S XP YP V, Full NP Sbj
 SubIPs$Southern[SubIPs$First == "S" &
                   SubIPs$Second %in% XP &
@@ -441,7 +436,6 @@ SubIPs$Southern[SubIPs$First == "S" &
                   SubIPs$Third %in% XP &
                   SubIPs$Fourth %in% XP &
                   SubIPs$SbjType == "FullNP"] <- "Y"
-#ADDED HERE
 # Southern, XP S V YP, Full NP Sbj
 SubIPs$Southern[SubIPs$First %in% XPNoObj &
                   SubIPs$Second == "S" &
@@ -460,7 +454,6 @@ SubIPs$Southern[SubIPs$First %in% XPNoObj &
                   SubIPs$Third == "S" &
                   SubIPs$Fourth == "V" &
                   SubIPs$SbjType == "FullNP"] <- "Y"
-#STOPPED ADDING HERE
 #Southern, XP S V YP, Pronoun Sbj
 SubIPs$Southern[SubIPs$First %in% XP &
                   SubIPs$Second == "S" &
@@ -485,7 +478,6 @@ SubIPs$Southern[SubIPs$First == "S" &
                   SubIPs$Third %in% XP &
                   SubIPs$Fourth %in% XP &
                   SubIPs$SbjType == "Pronoun"] <- "Y"
-#ADDED HERE
 # Southern, XP S YP V, Pronoun Sbj
 SubIPs$Southern[SubIPs$First %in% XPNoObj &
                   SubIPs$Second == "S" &
@@ -498,7 +490,6 @@ SubIPs$Southern[SubIPs$First %in% XPNoObj &
                   SubIPs$Third == "S" &
                   SubIPs$Fourth == "V" &
                   SubIPs$SbjType == "Pronoun"] <- "Y"
-#STOPPED ADDING HERE
 #CM, XP V S YP, Full NP Sbj
 SubIPs$CM[SubIPs$First %in% XP &
             SubIPs$Second == "V" &
@@ -596,7 +587,7 @@ SubIPs$SVO[SubIPs$First == "S" &
              SubIPs$Fourth %in% XP &
              SubIPs$SbjType == "Pronoun"] <- "Y"
 
-#Make single big df in case useful later
+#Make single big df
 AllIPs <- rbind(MatrixIPs,SubIPs)
 
 #Matrix and subordinate general summary data 
@@ -648,22 +639,24 @@ All_counts <- merge(All_counts,Southern_counts,all=T)
 All_counts <- merge(All_counts,CM_counts,all=T)
 All_counts <- merge(All_counts,SVO_counts,all=T)
 All_counts[is.na(All_counts)] <- 0
-#Unique (CM and SVO only because 0 for northern and 7 for southern)
-UniquelyCM <- subset(AllIPs,Northern == "N" & Southern == "N" & CM == "Y" & SVO == "N")
-UniquelyCM %>% group_by(lat,lon,Words,Filename) %>% summarize(CM = n()) -> Unique_CM_counts
-UniquelySVO <- subset(AllIPs,Northern == "N" & Southern == "N" & CM == "N" & SVO == "Y")
-UniquelySVO %>% group_by(lat,lon,Words,Filename) %>% summarize(SVO = n()) -> Unique_SVO_counts
-Unique_counts <- merge(Unique_counts,Unique_CM_counts,all=T)
-Unique_counts <- merge(Unique_counts,Unique_SVO_counts,all=T)
-Unique_counts[is.na(Unique_counts)] <- 0
+# #Unique (CM and SVO only because 0 for northern and 7 for southern)
+# UniquelyCM <- subset(AllIPs,Northern == "N" & Southern == "N" & CM == "Y" & SVO == "N")
+# UniquelyCM %>% group_by(lat,lon,Words,Filename) %>% summarize(CM = n()) -> Unique_CM_counts
+# UniquelySVO <- subset(AllIPs,Northern == "N" & Southern == "N" & CM == "N" & SVO == "Y")
+# UniquelySVO %>% group_by(lat,lon,Words,Filename) %>% summarize(SVO = n()) -> Unique_SVO_counts
+# Unique_counts <- merge(Unique_counts,Unique_CM_counts,all=T)
+# Unique_counts <- merge(Unique_counts,Unique_SVO_counts,all=T)
+# Unique_counts[is.na(Unique_counts)] <- 0
 
 # Basic England map
-latmin=49.9
-latmax=55.8
-lonmin=-6
-lonmax=2
-# England <- get_stamenmap(bbox=c(left=lonmin,bottom=latmin,right=lonmax,top=latmax),maptype="terrain-background",zoom=7,force=F,crop=T)
 
+# latmin=49.9
+# latmax=55.8
+# lonmin=-6
+# lonmax=2
+# # England <- get_stamenmap(bbox=c(left=lonmin,bottom=latmin,right=lonmax,top=latmax),maptype="terrain-background",zoom=7,force=F,crop=T)
+
+# Basic England map
 UK1<-getData("GADM", country="gb", level=1)
 England <- UK1[UK1@data$NAME_1=="England",]
 
@@ -786,20 +779,20 @@ AllSVO.gg <- England.gg +
   theme_void() +
   theme(plot.margin = unit(c(5,0,0,0),"mm"))
 
-#CM unique map
-UniqueCM.gg <- England.gg +
-  geom_point(data=Unique_counts,aes(y=lat,x=lon,size=Total,color=CM/Total)) +
-  #scale_color_continuous(name="% CM") + 
-  scale_color_gradientn(colours=MyBouncyColours,name="% CM") + 
-  scale_size_area(name = "Tokens") +
-  theme_void()
-#SVO unique map
-UniqueSVO.gg <- England.gg +
-  geom_point(data=Unique_counts,aes(y=lat,x=lon,size=Total,color=SVO/Total)) +
-  #scale_color_continuous(name="% SV") + 
-  scale_color_gradientn(colours=MyBouncyColours,name="% SV") + 
-  scale_size_area(name = "Tokens") +
-  theme_void()
+# #CM unique map
+# UniqueCM.gg <- England.gg +
+#   geom_point(data=Unique_counts,aes(y=lat,x=lon,size=Total,color=CM/Total)) +
+#   #scale_color_continuous(name="% CM") + 
+#   scale_color_gradientn(colours=MyBouncyColours,name="% CM") + 
+#   scale_size_area(name = "Tokens") +
+#   theme_void()
+# #SVO unique map
+# UniqueSVO.gg <- England.gg +
+#   geom_point(data=Unique_counts,aes(y=lat,x=lon,size=Total,color=SVO/Total)) +
+#   #scale_color_continuous(name="% SV") + 
+#   scale_color_gradientn(colours=MyBouncyColours,name="% SV") + 
+#   scale_size_area(name = "Tokens") +
+#   theme_void()
 
 #Make pdfs
 pdf("MatrixMaps_new.pdf",height = 10, width = 12)
