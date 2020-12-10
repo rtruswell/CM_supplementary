@@ -21,7 +21,7 @@ Workflow is as follows (assumes all files in the same directory):
 
 1. Run coding queries on relevant corpora.
 2. Run OoosIds.q on .cod files output by coding queries.
-3. Perform minor edits on .cod.ooo files output by OoosIds.q (globally replace `@` symbol with `:`; globally delete token IDs while retaining text IDs &mdash; for YCOE and PPCME2 queries this involves globally deleting the regex string `,.*$`; for PLAEME queries, delete `\..*$').
+3. Perform minor edits on .cod.ooo files output by OoosIds.q (globally replace `@` symbol with `:`; globally delete token IDs while retaining text IDs &mdash; for YCOE and PPCME2 queries this involves globally deleting the regex string `,.*$`; for PLAEME queries, delete `\..*$`).
 4. Run R scripts (scripts assume that .cod.ooo files are accessible in the working directory).
 
 NB the outputs of the first six coding queries are not called by any R script.  I have included these queries because they are the basis for the summary counts in `CM_grammar_comparison.csv`.
